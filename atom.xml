@@ -4,7 +4,7 @@
   <subtitle><![CDATA[Life of coding and drawing.]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="/"/>
-  <updated>2015-05-13T19:48:32.000Z</updated>
+  <updated>2015-05-13T19:51:21.000Z</updated>
   <id>/</id>
   
   <author>
@@ -19,11 +19,10 @@
     <link href="/2015/05/12/install-coreos/"/>
     <id>/2015/05/12/install-coreos/</id>
     <published>2015-05-12T02:29:14.000Z</published>
-    <updated>2015-05-13T19:48:32.000Z</updated>
+    <updated>2015-05-13T19:51:21.000Z</updated>
     <content type="html"><![CDATA[<p>趁著最近要再新增CoreOS的node做測試，整理一下文件</p>
 <p>安裝CoreOS，雖然用Vagrant或是使用一些Iaas服務像Amazon EC2, Digital Ocean等，他們都有提供非常方便快速的安裝方法。但我主要是安裝在bare metal上做測試，在安裝時有遇到一點小麻煩，如果有人遇到相同的問題，也許可以給一點參考</p>
-<blockquote>
-<h3 id="Reference">Reference</h3><ul>
+<blockquote><h3 id="Reference">Reference</h3><ul>
 <li><a href="https://coreos.com/" target="_blank" rel="external">CoreOS site</a></li>
 <li><a href="https://coreos.com/docs/cluster-management/setup/network-config-with-networkd/" target="_blank" rel="external">Network Configuration with networkd</a></li>
 <li><a href="https://coreos.com/docs/running-coreos/bare-metal/installing-to-disk/" target="_blank" rel="external">Installing CoreOS to Disk</a></li>
