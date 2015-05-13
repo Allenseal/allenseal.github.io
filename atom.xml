@@ -4,7 +4,7 @@
   <subtitle><![CDATA[Life of coding and drawing.]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="/"/>
-  <updated>2015-05-11T14:44:17.000Z</updated>
+  <updated>2015-05-13T14:21:46.000Z</updated>
   <id>/</id>
   
   <author>
@@ -13,6 +13,103 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title><![CDATA[Installing CoreOS to Disk]]></title>
+    <link href="/2015/05/12/install-coreos/"/>
+    <id>/2015/05/12/install-coreos/</id>
+    <published>2015-05-12T02:29:14.000Z</published>
+    <updated>2015-05-13T14:21:46.000Z</updated>
+    <content type="html"><![CDATA[<p>趁著最近要再新增CoreOS的node做測試，整理一下文件</p>
+<p>安裝CoreOS，雖然用Vagrant或是使用一些Iaas服務像Amazon EC2, Digital Ocean等，他們都有提供非常方便快速的安裝方法。但我主要是安裝在bare metal上做測試，在安裝時有遇到一點小麻煩，如果有人遇到相同的問題，也許可以給一點參考</p>
+<h3 id="Reference">Reference</h3><ul>
+<li><a href="https://coreos.com/" target="_blank" rel="external">CoreOS site</a></li>
+<li><a href="https://coreos.com/docs/cluster-management/setup/network-config-with-networkd/" target="_blank" rel="external">Network Configuration with networkd</a></li>
+<li><a href="https://coreos.com/docs/running-coreos/bare-metal/installing-to-disk/" target="_blank" rel="external">Installing CoreOS to Disk</a></li>
+</ul>
+<h3 id="Prerequisites">Prerequisites</h3><ol>
+<li><p>core-install script</p>
+<ul>
+<li><a href="https://raw.githubusercontent.com/coreos/init/master/bin/coreos-install" target="_blank" rel="external">Download from CoreOS’s Github</a></li>
+</ul>
+</li>
+<li><p>cloud config</p>
+<ul>
+<li>這裡每台設定都會有些不同設定，請參考這篇<a href="/2015/05/11/hello-world/">Example of cloud config</a></li>
+</ul>
+</li>
+<li><p>CoreOS live CD stable</p>
+<ul>
+<li><a href="https://coreos.com/docs/running-coreos/platforms/iso/" target="_blank" rel="external">Download from CoreOS</a></li>
+</ul>
+</li>
+</ol>
+<h3 id="Step_1:_Mount_live_CD">Step 1: Mount live CD</h3><ol>
+<li>Mount live CD and boot by it</li>
+</ol>
+<h3 id="Step_2:_Set_Network_Confiuration">Step 2: Set Network Confiuration</h3><p>重開機之後會直接進入CoreOS live CD裡。但我一開始會沒有網路，所以先來做一下網路設定</p>
+<ol>
+<li><p>Check network interface card name<br>使用<code>ifconfig</code>查一下網卡名稱，再來編輯<code>/etc/systemd/network/static.network</code></p>
+</li>
+<li><p><code>sudo vim /etc/systemd/network/static.network</code></p>
+<figure class="highlight bash"><figcaption><span>/etc/systemd/network/static.network</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[Match]</span><br><span class="line">Name=YOUR_INTERFACE</span><br><span class="line">[Network]</span><br><span class="line">Address=YOUR_IP/<span class="number">24</span></span><br><span class="line">Gateway=YOUR_GATEWAY</span><br><span class="line">DNS=<span class="number">8.8</span>.<span class="number">8.8</span></span><br><span class="line">DNS=<span class="number">8.8</span>.<span class="number">4.4</span></span><br></pre></td></tr></table></figure>
+<p>把YOUR_INTERFACE, YOUR_IP, YOUR_GATEWAY替換成自己的設定。當然你也可以設定兩個以上的ip在一張網卡上，我設了一個public跟一個private ip，下面是我的範例：</p>
+<figure class="highlight bash"><figcaption><span>/etc/systemd/network/static.network</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">[Match]</span><br><span class="line">Name=enp2s0f0</span><br><span class="line"></span><br><span class="line">[Network]</span><br><span class="line">Address=<span class="number">140</span>.xxx.xxx.<span class="number">58</span>/<span class="number">24</span></span><br><span class="line">Gateway=<span class="number">140</span>.xxx.xxx.<span class="number">254</span></span><br><span class="line">Address=<span class="number">10</span>.xxx.xxx.<span class="number">59</span>/<span class="number">24</span></span><br><span class="line">Gateway=<span class="number">10</span>.xxx.xxx.<span class="number">254</span></span><br><span class="line">DNS=<span class="number">8.8</span>.<span class="number">8.8</span></span><br><span class="line">DNS=<span class="number">8.8</span>.<span class="number">4.4</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Restart network: <code>sudo systemctl restart systemd-networkd</code></p>
+</li>
+<li><p>Test: <code>ping google.com</code></p>
+</li>
+<li><p>change password: <code>sudo passwd core</code><br>因為等下我們要ssh進來，來改一下密碼 </p>
+</li>
+</ol>
+<p>到這邊網路已經設定完成</p>
+<h3 id="Step_3:_Install_CoreOS">Step 3: Install CoreOS</h3><ol>
+<li><p>Ssh to CoreOS server</p>
+</li>
+<li><p>Download coreos-install script </p>
+<ul>
+<li><code>wget https://raw.githubusercontent.com/coreos/init/master/bin/coreos-install</code></li>
+<li><code>sudo chmod +x coreos-install</code></li>
+</ul>
+</li>
+<li><p>Download cloud-config<br>基本上每個cloud config都有不同的地方，請參考另外一篇設定 <a href="/2015/05/11/hello-world/">Example of cloud config</a></p>
+</li>
+<li><p>Check disk name </p>
+<ul>
+<li><p><code>lsblk</code> or <code>df -h</code></p>
+<img src="/2015/05/12/install-coreos/image-1.png">
+<p>可以看到cciss!c0d0是我們的disk，ls查一下可以發現<code>/dev/cciss/c0d0</code>，等一下會用到</p>
+</li>
+</ul>
+</li>
+<li><p>coreos-install</p>
+<ul>
+<li><p><code>sudo ./coreos-install -d /dev/cciss/c0d0 -C stable -c cloud-config01.yaml</code><br>這裡我安裝stable版本在/dev/cciss/c0d0，並使用cloud-config01.yaml當設定檔</p>
+</li>
+<li><p>有時候他會顯示device is busy，那就只能reboot，再從頭從網路開始設定</p>
+</li>
+</ul>
+</li>
+<li><p>Reboot and unmount image</p>
+</li>
+</ol>
+<p>之後如果還想要更改cloud config的設定，修改/var/lib/coreos-install/user_data，重開機後就會生效了</p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>趁著最近要再新增CoreOS的node做測試，整理一下文件</p>
+<p>安裝CoreOS，雖然用Vagrant或是使用一些Iaas服務像Amazon EC2, Digital Ocean等，他們都有提供非常方便快速的安裝方法。但我主要是安裝在bare metal上做測試，]]>
+    </summary>
+    
+      <category term="coreos" scheme="/tags/coreos/"/>
+    
+      <category term="deployment" scheme="/tags/deployment/"/>
+    
+      <category term="coding" scheme="/categories/coding/"/>
+    
+      <category term="deployment" scheme="/categories/coding/deployment/"/>
+    
+  </entry>
   
   <entry>
     <title><![CDATA[Hello World]]></title>
@@ -32,19 +129,6 @@
 ]]></content>
     <summary type="html">
     <![CDATA[<p>Welcome to <a href="http://hexo.io/" target="_blank" rel="external">Hexo</a>! This is your very first post. Check <a href="http://hexo.io]]>
-    </summary>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[test]]></title>
-    <link href="/2015/03/19/test/"/>
-    <id>/2015/03/19/test/</id>
-    <published>2015-03-19T08:53:58.000Z</published>
-    <updated>2015-03-19T08:53:58.000Z</updated>
-    <content type="html"></content>
-    <summary type="html">
-    
     </summary>
     
   </entry>

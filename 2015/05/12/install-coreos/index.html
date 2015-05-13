@@ -5,7 +5,7 @@
     <meta http-equiv="Content-Type" content="text/html" charset="UTF-8" >
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="generator" content="Allenseal">
-    <title>Allenseal - Hello World</title>
+    <title>Allenseal - Installing CoreOS to Disk</title>
     <meta name="author" content="Allens">
     <meta name="description" content="Allenseal">
     <link rel="icon" href="/assets/images/null">
@@ -134,26 +134,98 @@
     
         <div class="post-header main-content-wrap">
     
-        <h1 class="post-title" itemprop="headline">Hello World</h1>
+        <h1 class="post-title" itemprop="headline">Installing CoreOS to Disk</h1>
     
     <div class="post-meta">
-    <time  itemprop="datePublished" content="Mon May 11 2015 22:44:17 GMT+0800">
-        May 11, 2015
+    <time  itemprop="datePublished" content="Tue May 12 2015 10:29:14 GMT+0800">
+        May 12, 2015
     </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/coding/">coding</a>, <a class="category-link" href="/categories/coding/deployment/">deployment</a>
+
+
     
 </div>
 </div>
     
     <div class="post-content markdown main-content-wrap" itemprop="articleBody">
-        <p>Welcome to <a href="http://hexo.io/" target="_blank" rel="external">Hexo</a>! This is your very first post. Check <a href="http://hexo.io/docs/" target="_blank" rel="external">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="http://hexo.io/docs/troubleshooting.html" target="_blank" rel="external">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="external">GitHub</a>.</p>
-<h2 id="Quick_Start">Quick Start</h2><h3 id="Create_a_new_post">Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
-<p>More info: <a href="http://hexo.io/docs/writing.html" target="_blank" rel="external">Writing</a></p>
-<h3 id="Run_server">Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="http://hexo.io/docs/server.html" target="_blank" rel="external">Server</a></p>
-<h3 id="Generate_static_files">Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="http://hexo.io/docs/generating.html" target="_blank" rel="external">Generating</a></p>
-<h3 id="Deploy_to_remote_sites">Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="http://hexo.io/docs/deployment.html" target="_blank" rel="external">Deployment</a></p>
+        <p>趁著最近要再新增CoreOS的node做測試，整理一下文件</p>
+<p>安裝CoreOS，雖然用Vagrant或是使用一些Iaas服務像Amazon EC2, Digital Ocean等，他們都有提供非常方便快速的安裝方法。但我主要是安裝在bare metal上做測試，在安裝時有遇到一點小麻煩，如果有人遇到相同的問題，也許可以給一點參考</p>
+<h3 id="Reference">Reference</h3><ul>
+<li><a href="https://coreos.com/" target="_blank" rel="external">CoreOS site</a></li>
+<li><a href="https://coreos.com/docs/cluster-management/setup/network-config-with-networkd/" target="_blank" rel="external">Network Configuration with networkd</a></li>
+<li><a href="https://coreos.com/docs/running-coreos/bare-metal/installing-to-disk/" target="_blank" rel="external">Installing CoreOS to Disk</a></li>
+</ul>
+<h3 id="Prerequisites">Prerequisites</h3><ol>
+<li><p>core-install script</p>
+<ul>
+<li><a href="https://raw.githubusercontent.com/coreos/init/master/bin/coreos-install" target="_blank" rel="external">Download from CoreOS’s Github</a></li>
+</ul>
+</li>
+<li><p>cloud config</p>
+<ul>
+<li>這裡每台設定都會有些不同設定，請參考這篇<a href="/2015/05/11/hello-world/">Example of cloud config</a></li>
+</ul>
+</li>
+<li><p>CoreOS live CD stable</p>
+<ul>
+<li><a href="https://coreos.com/docs/running-coreos/platforms/iso/" target="_blank" rel="external">Download from CoreOS</a></li>
+</ul>
+</li>
+</ol>
+<h3 id="Step_1:_Mount_live_CD">Step 1: Mount live CD</h3><ol>
+<li>Mount live CD and boot by it</li>
+</ol>
+<h3 id="Step_2:_Set_Network_Confiuration">Step 2: Set Network Confiuration</h3><p>重開機之後會直接進入CoreOS live CD裡。但我一開始會沒有網路，所以先來做一下網路設定</p>
+<ol>
+<li><p>Check network interface card name<br>使用<code>ifconfig</code>查一下網卡名稱，再來編輯<code>/etc/systemd/network/static.network</code></p>
+</li>
+<li><p><code>sudo vim /etc/systemd/network/static.network</code></p>
+<figure class="highlight bash"><figcaption><span>/etc/systemd/network/static.network</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[Match]</span><br><span class="line">Name=YOUR_INTERFACE</span><br><span class="line">[Network]</span><br><span class="line">Address=YOUR_IP/<span class="number">24</span></span><br><span class="line">Gateway=YOUR_GATEWAY</span><br><span class="line">DNS=<span class="number">8.8</span>.<span class="number">8.8</span></span><br><span class="line">DNS=<span class="number">8.8</span>.<span class="number">4.4</span></span><br></pre></td></tr></table></figure>
+<p>把YOUR_INTERFACE, YOUR_IP, YOUR_GATEWAY替換成自己的設定。當然你也可以設定兩個以上的ip在一張網卡上，我設了一個public跟一個private ip，下面是我的範例：</p>
+<figure class="highlight bash"><figcaption><span>/etc/systemd/network/static.network</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">[Match]</span><br><span class="line">Name=enp2s0f0</span><br><span class="line"></span><br><span class="line">[Network]</span><br><span class="line">Address=<span class="number">140</span>.xxx.xxx.<span class="number">58</span>/<span class="number">24</span></span><br><span class="line">Gateway=<span class="number">140</span>.xxx.xxx.<span class="number">254</span></span><br><span class="line">Address=<span class="number">10</span>.xxx.xxx.<span class="number">59</span>/<span class="number">24</span></span><br><span class="line">Gateway=<span class="number">10</span>.xxx.xxx.<span class="number">254</span></span><br><span class="line">DNS=<span class="number">8.8</span>.<span class="number">8.8</span></span><br><span class="line">DNS=<span class="number">8.8</span>.<span class="number">4.4</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Restart network: <code>sudo systemctl restart systemd-networkd</code></p>
+</li>
+<li><p>Test: <code>ping google.com</code></p>
+</li>
+<li><p>change password: <code>sudo passwd core</code><br>因為等下我們要ssh進來，來改一下密碼 </p>
+</li>
+</ol>
+<p>到這邊網路已經設定完成</p>
+<h3 id="Step_3:_Install_CoreOS">Step 3: Install CoreOS</h3><ol>
+<li><p>Ssh to CoreOS server</p>
+</li>
+<li><p>Download coreos-install script </p>
+<ul>
+<li><code>wget https://raw.githubusercontent.com/coreos/init/master/bin/coreos-install</code></li>
+<li><code>sudo chmod +x coreos-install</code></li>
+</ul>
+</li>
+<li><p>Download cloud-config<br>基本上每個cloud config都有不同的地方，請參考另外一篇設定 <a href="/2015/05/11/hello-world/">Example of cloud config</a></p>
+</li>
+<li><p>Check disk name </p>
+<ul>
+<li><p><code>lsblk</code> or <code>df -h</code></p>
+<img src="/2015/05/12/install-coreos/image-1.png">
+<p>可以看到cciss!c0d0是我們的disk，ls查一下可以發現<code>/dev/cciss/c0d0</code>，等一下會用到</p>
+</li>
+</ul>
+</li>
+<li><p>coreos-install</p>
+<ul>
+<li><p><code>sudo ./coreos-install -d /dev/cciss/c0d0 -C stable -c cloud-config01.yaml</code><br>這裡我安裝stable版本在/dev/cciss/c0d0，並使用cloud-config01.yaml當設定檔</p>
+</li>
+<li><p>有時候他會顯示device is busy，那就只能reboot，再從頭從網路開始設定</p>
+</li>
+</ul>
+</li>
+<li><p>Reboot and unmount image</p>
+</li>
+</ol>
+<p>之後如果還想要更改cloud config的設定，修改/var/lib/coreos-install/user_data，重開機後就會生效了</p>
 
         
             
@@ -161,12 +233,19 @@
     </div>
     <div class="post-footer main-content-wrap">
         
+            <div class="post-footer-tags">
+                <span class="text-color-light text-small">TAGGED IN</span><br/>
+                
+    <a class="tag tag--primary tag--small t-link" href="/tags/coreos/">coreos</a> <a class="tag tag--primary tag--small t-link" href="/tags/deployment/">deployment</a>
+
+            </div>
+        
         <div class="post-actions-wrap">
     <nav>
         <ul class="post-actions post-action-nav">
             <li class="post-action">
                 
-                    <a class="post-action-btn btn btn--default tooltip--top" href="/2015/05/12/install-coreos/"  data-tooltip="Installing CoreOS to Disk">
+                    <a class="post-action-btn btn btn--disabled">
                 
                     <i class="fa fa-angle-left"></i>
                     <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
@@ -174,7 +253,7 @@
             </li>
             <li class="post-action">
                 
-                    <a class="post-action-btn btn btn--disabled">
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2015/05/11/hello-world/" data-tooltip="Hello World">
                 
                     <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
                     <i class="fa fa-angle-right"></i>
@@ -184,17 +263,17 @@
     </nav>
     <ul class="post-actions post-action-share">
         <li class="post-action">
-            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=/2015/05/11/hello-world/">
+            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=/2015/05/12/install-coreos/">
                 <i class="fa fa-google-plus"></i>
             </a>
         </li>
         <li class="post-action">
-            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=/2015/05/11/hello-world/">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=/2015/05/12/install-coreos/">
                 <i class="fa fa-facebook-official"></i>
             </a>
         </li>
         <li class="post-action">
-            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=/2015/05/11/hello-world/">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=/2015/05/12/install-coreos/">
                 <i class="fa fa-twitter"></i>
             </a>
         </li>
@@ -215,7 +294,7 @@
         <ul class="post-actions post-action-nav">
             <li class="post-action">
                 
-                    <a class="post-action-btn btn btn--default tooltip--top" href="/2015/05/12/install-coreos/"  data-tooltip="Installing CoreOS to Disk">
+                    <a class="post-action-btn btn btn--disabled">
                 
                     <i class="fa fa-angle-left"></i>
                     <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
@@ -223,7 +302,7 @@
             </li>
             <li class="post-action">
                 
-                    <a class="post-action-btn btn btn--disabled">
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2015/05/11/hello-world/" data-tooltip="Hello World">
                 
                     <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
                     <i class="fa fa-angle-right"></i>
@@ -233,17 +312,17 @@
     </nav>
     <ul class="post-actions post-action-share">
         <li class="post-action">
-            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=/2015/05/11/hello-world/">
+            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=/2015/05/12/install-coreos/">
                 <i class="fa fa-google-plus"></i>
             </a>
         </li>
         <li class="post-action">
-            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=/2015/05/11/hello-world/">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=/2015/05/12/install-coreos/">
                 <i class="fa fa-facebook-official"></i>
             </a>
         </li>
         <li class="post-action">
-            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=/2015/05/11/hello-world/">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=/2015/05/12/install-coreos/">
                 <i class="fa fa-twitter"></i>
             </a>
         </li>
