@@ -4,7 +4,7 @@
   <subtitle><![CDATA[Life of coding and drawing.]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="/"/>
-  <updated>2015-05-13T19:42:49.000Z</updated>
+  <updated>2015-05-13T19:47:52.000Z</updated>
   <id>/</id>
   
   <author>
@@ -19,7 +19,7 @@
     <link href="/2015/05/12/install-coreos/"/>
     <id>/2015/05/12/install-coreos/</id>
     <published>2015-05-12T02:29:14.000Z</published>
-    <updated>2015-05-13T19:42:49.000Z</updated>
+    <updated>2015-05-13T19:47:52.000Z</updated>
     <content type="html"><![CDATA[<p>趁著最近要再新增CoreOS的node做測試，整理一下文件</p>
 <p>安裝CoreOS，雖然用Vagrant或是使用一些Iaas服務像Amazon EC2, Digital Ocean等，他們都有提供非常方便快速的安裝方法。但我主要是安裝在bare metal上做測試，在安裝時有遇到一點小麻煩，如果有人遇到相同的問題，也許可以給一點參考</p>
 <blockquote>
@@ -55,7 +55,7 @@
 </li>
 <li><p><code>sudo vim /etc/systemd/network/static.network</code></p>
 <figure class="highlight bash"><figcaption><span>/etc/systemd/network/static.network</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[Match]</span><br><span class="line">Name=YOUR_INTERFACE</span><br><span class="line">[Network]</span><br><span class="line">Address=YOUR_IP/<span class="number">24</span></span><br><span class="line">Gateway=YOUR_GATEWAY</span><br><span class="line">DNS=<span class="number">8.8</span>.<span class="number">8.8</span></span><br><span class="line">DNS=<span class="number">8.8</span>.<span class="number">4.4</span></span><br></pre></td></tr></table></figure>
-<p>Replace YOUR_INTERFACE, YOUR_IP, YOUR_GATEWAY with yours. Of course, you can configure two or more ip settings. I configure one for public and one for private. just like mine below：</p>
+<p>Replace YOUR_INTERFACE, YOUR_IP, YOUR_GATEWAY with yours. Of course, you can configure two or more ip settings. I configure one for public and another for private.<br>My example：</p>
 <figure class="highlight bash"><figcaption><span>/etc/systemd/network/static.network</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">[Match]</span><br><span class="line">Name=enp2s0f0</span><br><span class="line"></span><br><span class="line">[Network]</span><br><span class="line">Address=<span class="number">140</span>.xxx.xxx.<span class="number">58</span>/<span class="number">24</span></span><br><span class="line">Gateway=<span class="number">140</span>.xxx.xxx.<span class="number">254</span></span><br><span class="line">Address=<span class="number">10</span>.xxx.xxx.<span class="number">59</span>/<span class="number">24</span></span><br><span class="line">Gateway=<span class="number">10</span>.xxx.xxx.<span class="number">254</span></span><br><span class="line">DNS=<span class="number">8.8</span>.<span class="number">8.8</span></span><br><span class="line">DNS=<span class="number">8.8</span>.<span class="number">4.4</span></span><br></pre></td></tr></table></figure>
 </li>
 <li><p>Restart network: <code>sudo systemctl restart systemd-networkd</code></p>
@@ -96,7 +96,7 @@
 <li><p>Reboot and unmount image</p>
 </li>
 </ol>
-<p>If you want to change cloud config, just modify /var/lib/coreos-install/user_data and reboot. Good luck!! </p>
+<p>If you want to change cloud config, just modify <code>/var/lib/coreos-install/user_data</code> and reboot. Good luck!! </p>
 ]]></content>
     <summary type="html">
     <![CDATA[<p>趁著最近要再新增CoreOS的node做測試，整理一下文件</p>
