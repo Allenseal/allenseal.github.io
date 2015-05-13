@@ -4,7 +4,7 @@
   <subtitle><![CDATA[Life of coding and drawing.]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="/"/>
-  <updated>2015-05-13T19:47:52.000Z</updated>
+  <updated>2015-05-13T19:48:32.000Z</updated>
   <id>/</id>
   
   <author>
@@ -19,7 +19,7 @@
     <link href="/2015/05/12/install-coreos/"/>
     <id>/2015/05/12/install-coreos/</id>
     <published>2015-05-12T02:29:14.000Z</published>
-    <updated>2015-05-13T19:47:52.000Z</updated>
+    <updated>2015-05-13T19:48:32.000Z</updated>
     <content type="html"><![CDATA[<p>趁著最近要再新增CoreOS的node做測試，整理一下文件</p>
 <p>安裝CoreOS，雖然用Vagrant或是使用一些Iaas服務像Amazon EC2, Digital Ocean等，他們都有提供非常方便快速的安裝方法。但我主要是安裝在bare metal上做測試，在安裝時有遇到一點小麻煩，如果有人遇到相同的問題，也許可以給一點參考</p>
 <blockquote>
@@ -96,7 +96,7 @@
 <li><p>Reboot and unmount image</p>
 </li>
 </ol>
-<p>If you want to change cloud config, just modify <code>/var/lib/coreos-install/user_data</code> and reboot. Good luck!! </p>
+<p>If you want to change cloud config, just modify <code>/var/lib/coreos-install/user_data</code> and reboot.<br>Good luck!! </p>
 ]]></content>
     <summary type="html">
     <![CDATA[<p>趁著最近要再新增CoreOS的node做測試，整理一下文件</p>
