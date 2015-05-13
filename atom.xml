@@ -4,7 +4,7 @@
   <subtitle><![CDATA[Life of coding and drawing.]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="/"/>
-  <updated>2015-05-13T14:43:48.000Z</updated>
+  <updated>2015-05-13T14:45:02.000Z</updated>
   <id>/</id>
   
   <author>
@@ -19,7 +19,7 @@
     <link href="/2015/05/12/install-coreos/"/>
     <id>/2015/05/12/install-coreos/</id>
     <published>2015-05-12T02:29:14.000Z</published>
-    <updated>2015-05-13T14:43:48.000Z</updated>
+    <updated>2015-05-13T14:45:02.000Z</updated>
     <content type="html"><![CDATA[<p>趁著最近要再新增CoreOS的node做測試，整理一下文件</p>
 <p>安裝CoreOS，雖然用Vagrant或是使用一些Iaas服務像Amazon EC2, Digital Ocean等，他們都有提供非常方便快速的安裝方法。但我主要是安裝在bare metal上做測試，在安裝時有遇到一點小麻煩，如果有人遇到相同的問題，也許可以給一點參考</p>
 <h3 id="Reference">Reference</h3><ul>
@@ -47,7 +47,7 @@
 <h3 id="Step_1:_Mount_live_CD">Step 1: Mount live CD</h3><ol>
 <li>Mount live CD and boot by it</li>
 </ol>
-<h3 id="Step_2:_Set_Network_Confiuration">Step 2: Set Network Confiuration</h3><p>重開機之後會直接進入CoreOS live CD裡。但我一開始會沒有網路，所以先來做一下網路設定</p>
+<h3 id="Step_2:_Set_Network_Configuration">Step 2: Set Network Configuration</h3><p>重開機之後會直接進入CoreOS live CD裡。但我一開始會沒有網路，所以先來做一下網路設定</p>
 <ol>
 <li><p>Check network interface card name<br>使用<code>ifconfig</code>查一下網卡名稱，再來編輯<code>/etc/systemd/network/static.network</code></p>
 </li>
