@@ -210,13 +210,13 @@
 <ul>
 <li><p><code>lsblk</code> or <code>df -h</code></p>
 <img src="/2015/05/12/install-coreos/image-1.png">
-<p>We can see <code>cciss!c0d0</code> is our disk. Use <code>ls</code> check if <code>/dev/cciss/c0d0</code> is exsited.</p>
+<p>We can see <code>sda</code> is our disk. Use <code>ls</code> check if <code>/dev/sda</code> is exsited.</p>
 </li>
 </ul>
 </li>
 <li><p>Run coreos-install</p>
 <ul>
-<li><p><code>sudo ./coreos-install -d /dev/cciss/c0d0 -C stable -c cloud-config01.yaml</code><br>I select <code>stable</code> version and install to <code>/dev/cciss/c0d0</code> by using <code>cloud-config01.yaml</code>. Maybe you want to use <code>beta</code> or <code>alpha</code>. As your mind.</p>
+<li><p><code>sudo ./coreos-install -d /dev/sda -C stable -c cloud-config01.yaml</code><br>I select <code>stable</code> version and install to <code>/dev/sda</code> by using <code>cloud-config01.yaml</code>. Maybe you want to use <code>beta</code> or <code>alpha</code>. As your mind.</p>
 </li>
 <li><p>Sometimes device is busy. You must reboot and re-do from seting network though it’s annoyed….</p>
 </li>
