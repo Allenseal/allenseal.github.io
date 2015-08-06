@@ -13,27 +13,18 @@
         <link rel="alternative" type="application/atom+xml" title="RSS" href="/atom.xml">
     
     <meta name="description" content="趁著最近要再新增CoreOS的node做測試，整理一下文件
-安裝CoreOS，雖然用Vagrant或是使用一些Iaas服務像Amazon EC2, Digital Ocean等，他們都有提供非常方便快速的安裝方法。但我主要是安裝在bare metal上做測試，在安裝時有遇到一點小麻煩，如果有人遇到相同的問題，也許可以給一點參考
-Reference
-CoreOS site
-Network Confi">
+安裝CoreOS，雖然用Vagrant或是使用一些Iaas服務像Amazon EC2, Digital Ocean等，他們都有提供非常方便快速的安裝方法。但我主要是安裝在bare metal上做測試，在安裝時有遇到一點小麻煩，如果有人遇到相同的問題，也許可以給一點參考">
 <meta property="og:type" content="blog">
 <meta property="og:title" content="Installing CoreOS to Disk">
 <meta property="og:url" content="/2015/05/12/install-coreos/index.html">
 <meta property="og:site_name" content="僕の物語">
 <meta property="og:description" content="趁著最近要再新增CoreOS的node做測試，整理一下文件
-安裝CoreOS，雖然用Vagrant或是使用一些Iaas服務像Amazon EC2, Digital Ocean等，他們都有提供非常方便快速的安裝方法。但我主要是安裝在bare metal上做測試，在安裝時有遇到一點小麻煩，如果有人遇到相同的問題，也許可以給一點參考
-Reference
-CoreOS site
-Network Confi">
+安裝CoreOS，雖然用Vagrant或是使用一些Iaas服務像Amazon EC2, Digital Ocean等，他們都有提供非常方便快速的安裝方法。但我主要是安裝在bare metal上做測試，在安裝時有遇到一點小麻煩，如果有人遇到相同的問題，也許可以給一點參考">
 <meta property="og:image" content="/2015/05/12/install-coreos/image-1.png">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Installing CoreOS to Disk">
 <meta name="twitter:description" content="趁著最近要再新增CoreOS的node做測試，整理一下文件
-安裝CoreOS，雖然用Vagrant或是使用一些Iaas服務像Amazon EC2, Digital Ocean等，他們都有提供非常方便快速的安裝方法。但我主要是安裝在bare metal上做測試，在安裝時有遇到一點小麻煩，如果有人遇到相同的問題，也許可以給一點參考
-Reference
-CoreOS site
-Network Confi">
+安裝CoreOS，雖然用Vagrant或是使用一些Iaas服務像Amazon EC2, Digital Ocean等，他們都有提供非常方便快速的安裝方法。但我主要是安裝在bare metal上做測試，在安裝時有遇到一點小麻煩，如果有人遇到相同的問題，也許可以給一點參考">
     
     
     
@@ -186,7 +177,7 @@ Network Confi">
     <div class="post-content markdown main-content-wrap" itemprop="articleBody">
         
             <p>趁著最近要再新增CoreOS的node做測試，整理一下文件</p>
-<p>安裝CoreOS，雖然用Vagrant或是使用一些Iaas服務像Amazon EC2, Digital Ocean等，他們都有提供非常方便快速的安裝方法。但我主要是安裝在bare metal上做測試，在安裝時有遇到一點小麻煩，如果有人遇到相同的問題，也許可以給一點參考</p>
+<p>安裝CoreOS，雖然用Vagrant或是使用一些Iaas服務像Amazon EC2, Digital Ocean等，他們都有提供非常方便快速的安裝方法。但我主要是安裝在bare metal上做測試，在安裝時有遇到一點小麻煩，如果有人遇到相同的問題，也許可以給一點參考<br><a id="more"></a></p>
 <h3 id="Reference">Reference</h3><ul>
 <li><a href="https://coreos.com/" target="_blank" rel="external">CoreOS site</a></li>
 <li><a href="https://coreos.com/docs/cluster-management/setup/network-config-with-networkd/" target="_blank" rel="external">Network Configuration with networkd</a></li>
@@ -212,9 +203,9 @@ Network Confi">
 <h3 id="Step_1:_Mount_live_CD">Step 1: Mount live CD</h3><ol>
 <li>Mount live CD and boot by it</li>
 </ol>
-<h3 id="Step_2:_Set_Network_Configuration">Step 2: Set Network Configuration</h3><p>After reboot, we enter CoreOS live CD. Configure network if you have no network settings.  </p>
+<h3 id="Step_2:_Set_Network_Configuration">Step 2: Set Network Configuration</h3><p>After reboot, we enter CoreOS live CD. Configure network if you have no network settings.</p>
 <ol>
-<li><p>Check network interface card name<br>use <code>ifconfig</code> check network interface. </p>
+<li><p>Check network interface card name<br>use <code>ifconfig</code> check network interface.</p>
 </li>
 <li><p><code>sudo vim /etc/systemd/network/static.network</code></p>
 <figure class="highlight bash"><figcaption><span>/etc/systemd/network/static.network</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[Match]</span><br><span class="line">Name=YOUR_INTERFACE</span><br><span class="line">[Network]</span><br><span class="line">Address=YOUR_IP/<span class="number">24</span></span><br><span class="line">Gateway=YOUR_GATEWAY</span><br><span class="line">DNS=<span class="number">8.8</span>.<span class="number">8.8</span></span><br><span class="line">DNS=<span class="number">8.8</span>.<span class="number">4.4</span></span><br></pre></td></tr></table></figure>
@@ -232,7 +223,7 @@ Network Confi">
 <h3 id="Step_3:_Install_CoreOS">Step 3: Install CoreOS</h3><ol>
 <li><p>Ssh to CoreOS server</p>
 </li>
-<li><p>Download coreos-install script </p>
+<li><p>Download coreos-install script</p>
 <ul>
 <li><code>wget https://raw.githubusercontent.com/coreos/init/master/bin/coreos-install</code></li>
 <li><code>sudo chmod +x coreos-install</code></li>
@@ -240,7 +231,7 @@ Network Confi">
 </li>
 <li><p>Download your cloud-config</p>
 </li>
-<li><p>Check disk name </p>
+<li><p>Check disk name</p>
 <ul>
 <li><p><code>lsblk</code> or <code>df -h</code></p>
 <img src="/2015/05/12/install-coreos/image-1.png">
@@ -259,7 +250,7 @@ Network Confi">
 <li><p>Reboot and unmount image</p>
 </li>
 </ol>
-<p>If you want to change cloud config, just modify <code>/var/lib/coreos-install/user_data</code> and reboot.<br>Good luck!! </p>
+<p>If you want to change cloud config, just modify <code>/var/lib/coreos-install/user_data</code> and reboot.<br>Good luck!!</p>
 
         
         
